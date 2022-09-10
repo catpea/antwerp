@@ -6,11 +6,12 @@
   "main": "index.js",
   "scripts": {
     "save": "git add .; git commit -m 'New Release'; git push; npm version patch; npm publish; git push;",
+    "store": "git add .; git commit -m 'New Release'; npm version patch; git push;",
     "watch": "nodemon --watch layouts -e ejs,css --watch index.js antwerp",
     "server": "http-server -o -c-1 dist"
   },
   "bin": {
-    "antwerp": "./index.js"
+    "antwerp": "./antwerp.js"
   },
   "repository": {
     "type": "git",
