@@ -515,15 +515,15 @@ const dest = `dist/new-website`;
 
 const api = new Eternia(layouts, src, dest);
 
-await api.initialize();
-await api.static(); // render post to /guid/index.html
-await api.index(); // render main index
-await api.browse(); // render browse
-await api.posts(); // render post to /guid/index.html
+//await api.initialize();
+//await api.static(); // render post to /guid/index.html
+//await api.index(); // render main index
+//await api.browse(); // render browse
+//await api.posts(); // render post to /guid/index.html
 // // api.toc(); // render main index
 // // api.tiles(); // render main index
-await api.files(); // COPY FILES
-await api.resize(); // RESIZE FILES
+//await api.files(); // COPY FILES
+//await api.resize(); // RESIZE FILES
 //
 
 ///////await api.tagging(); // THIS IS SLOW
