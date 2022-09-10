@@ -9,6 +9,9 @@
     "watch": "nodemon --watch layouts -e ejs,css --watch index.js antwerp",
     "server": "http-server -o -c-1 dist"
   },
+  "bin": {
+    "antwerp": "./index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/catpea/antwerp.git"
