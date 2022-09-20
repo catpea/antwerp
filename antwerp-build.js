@@ -1,95 +1,89 @@
-#!/usr/bin/env node
-
+#!/usr/bin/env -S node --abort-on-uncaught-exception
 import fs from 'fs-extra';
+import path from 'path';
 import { opendir } from 'node:fs/promises';
 import { Readable, Transform } from 'node:stream';
-
 import { pipeline, finished,  } from 'node:stream/promises';
-
+import invariant from 'invariant';
 import util from 'util';
-import winston from 'winston';
 import lodash from 'lodash';
-
+import {chain} from 'lodash-es';
+import conf from './util/conf.js';
+import log from './util/log.js';
 import src from './lib/src.js';
 import object from './lib/object.js';
 import sources from './lib/sources.js';
 import content from './lib/content.js';
+import htmlize from './lib/htmlize.js';
 import targets from './lib/targets.js';
 import solutions from './lib/solutions.js';
 import files from './lib/files.js';
 import regen from './lib/regen.js';
-
+import posts from './lib/posts.js';
+import browser from './lib/browser.js';
+import order from './lib/order.js';
+import toc from './lib/toc.js';
+import tiles from './lib/tiles.js';
+import links from './lib/links.js';
+import alerts from './lib/alerts.js';
+import recon from './lib/recon.js';
+import downloadYoutubeThumbnails from './features/download-youtube-thumbnails.js';
+import injectYoutubeThumbnails   from './features/inject-youtube-thumbnails.js';
 import { Command, Option } from 'commander/esm.mjs';
-
-let api = lodash.runInContext();
-// api.mixin({ ex });
 
 const program = new Command();
 program.option('-f, --force', 'force installation');
-program.option('--remove-unused', 'remove unused files');
+program.option('--remove-unused-files', 'remove unused files');
 program.parse(process.argv);
 
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  defaultMeta: { service: 'user-service' },
-  transports: [
-    new winston.transports.Console({ format: winston.format.simple(), })
-  ],
-});
+import npmConf from 'conf';
+const c = new npmConf({projectName: 'antwerp'});
+const [project] = program.args;
+const configuration = path.join( c.get(project), 'conf.js' );
 
-// const pkgs = program.args;
-// if (!pkgs.length) { console.error('packages required'); process.exit(1); }
-// if (program.opts().force) console.log('  force: install');
-// pkgs.forEach(function(pkg) { console.log('  install : %s', pkg); });
-
-const [dest] = program.args;
-
-// console.log(`building dest: ${dest}`);
-// ['.antwerp', 'configuration.json'];
+if (!conf.length) { console.error('configuration file required'); process.exit(1); }
+const options = Object.fromEntries(['force'].map(key=>([key, program.opts()[key]])))
 
 const db = [];
-const configuration = {
-  src: '/home/meow/Universe/Development/db/dist/static-port',
-  dest: '/home/meow/Universe/Development/archive/dist/catpea-com',
-  removeUnused: program.opts().removeUnused,
-};
-const context = {configuration, db};
+const config = await conf(configuration, options);
+const context = Object.assign({db}, config);
 
-logger.profile('db');
-//await compose(context, src, object, sources, content, targets, solutions);
-logger.profile('db');
+log.profile('build');
+await compose(
+  series(src, object, sources, content, order, recon, downloadYoutubeThumbnails, injectYoutubeThumbnails, htmlize, targets, solutions),
+  //parallel(files, posts, browser, tiles, toc, links  )
+)(context)
+log.profile('build');
 
-logger.profile('build');
-// await compose(context, files);
-// await compose(files, posts, index, browser, tiles, toc);
-logger.profile('build');
+log.profile('files');
+await compose(files)(context)
+log.profile('files');
 
-// console.log(util.inspect(db[666], false, 42, true));
-// console.log(db.map(o=>o.attr.title));
+log.profile('posts');
+await compose(posts)(context)
+log.profile('posts');
 
+log.profile('browser');
+await compose(browser)(context)
+log.profile('browser');
 
+log.profile('tiles');
+await compose(tiles)(context)
+log.profile('tiles');
 
-// DISK SECTION (async)
-// const regenerate = await regen(allContent, configuration); ///).slice(0,3);
-// logger.profile('Metadata Loader');
+log.profile('alerts');
+await compose(alerts)(context)
+log.profile('alerts');
 
-// logger.profile('Missing File Identification');
-// const missingFiles = await missing(configuration); ///).slice(0,3);
-// logger.profile('Missing File Identification');
+log.profile('toc');
+await compose(toc)(context)
+log.profile('toc');
 
-// console.log(allContent);
-
-// const content = await data(configuration);
-// console.log(locations);
-// // DATA SECTION (sync)
-// logger.profile('Data Sorting');
-// const sorted = api.chain(content).sortBy('date').reverse().value();
-// logger.profile('Data Sorting');
-//
-// // console.log(sorted.map(o=>o.title));
+log.profile('links');
+await compose(links)(context)
+log.profile('links');
 
 
-async function compose(context, ...stack){
-  for(const instruction of stack) await instruction.bind(context)()
-}
+function compose(...stack){ return async (context) => { for(const instruction of stack) await instruction(context) } }
+function series(...stack){ return async (context) => { for(const instruction of stack) await instruction(context) } }
+function parallel(...stack){ return async (context) => Promise.all( stack.map(instruction=>instruction(context))) }

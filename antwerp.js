@@ -17,13 +17,16 @@ program.version('1.0.0');
 //   .description('Creates a new record with default settings.')
 //   .action((project, template, options)=>{create({project, template, options})});
 
-
 program
   .name('antwerp')
+
+  .showHelpAfterError()
   .version('0.1.0')
-  .command('init [data] [template]', 'initialize new repository with data and template')
+  // .passThroughOptions()
+  .command('new [project] [data] [template]', 'initialize new repository with data and template')
   .command('build [query]', 'search with optional query')
-  .command('update', 'update installed packages', { executableFile: 'myUpdateSubCommand' })
+  .command('register [project] [dir]', 'set full path to project directory')
+  .command('read [project] [path]', 'search with optional query')
   .command('help', 'list packages installed', { isDefault: true });
 
 program.parse(process.argv);
