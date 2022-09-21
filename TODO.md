@@ -1,11 +1,14 @@
-- thumbs.js: write a program for downloading yt thumbs
-- recon.js: settle issue of where links and images array come from for front-matter (.raw)
-- resize.js: FIX IMAGES THEY ARE NOT SQUARE????? ... Image Cropping and Resizing (xl- and sm-)
+audiobook generator
+portfolio image generator
 
 
 
+FIXBUG /home/meow/Universe/Development/antwerp/lib/files.js
+// BUG: NOT RELIABLE if(record.file.files.dest.missing)
+await transferMissing(record, {ensureDir:true, verbosity})
 
+AFTER TAKE-OVER
+fix /home/meow/Universe/Development/eternia/src/transformers/process-yaml/to-markdown.js youytube template was broken on purpose
 
-- add canonical tag (internet archive?)
-- some images for warrior are missing during import 004/003
 - upload the whole website to INTERNET ARCHIVE?
+- IPFS UPLOAD

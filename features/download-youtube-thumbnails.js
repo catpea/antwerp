@@ -22,9 +22,11 @@ async function downloadThumbnails(record){
 
     if(!record.attr.links) return;
 
-    
+
     const requiredFiles = record.attr.links
+      .filter(link=>link.presentation==true)
       .map(link=>link.url)
+      .filter(url=>url.startsWith('https://www.youtube.com/watch?v='))
       .map(url=>getVideoId(url));
 
     const existingFiles = (await fs.readdir(record.file.files.src, { withFileTypes: true }))
@@ -34,11 +36,20 @@ async function downloadThumbnails(record){
       .filter(i=>i)
       .map(a=>a[1])
 
+    const testing = true;
+
     const missingFiles = difference(requiredFiles, existingFiles);
-    const bar = progress(`downloading thumbnails [:bar] :rate/tps :percent :etas`, missingFiles.length)
+    const bar = progress(`downloading thumbnails [:bar] :rate/tps :percent :etas`, missingFiles.length);
+
     for(const v of missingFiles){
-      await downloadThumbnail(v, record.file.files.src);
-      bar.tick()
+      if(testing){
+        console.log(`record title: ${record.attr.title}`);
+        console.log(`YOUTUBE DOWNLOAD DISABLED: ${v}`);
+      }else{
+        await downloadThumbnail(v, record.file.files.src);
+        bar.tick()
+      }
+      await slowDown();
     }
 }
 
@@ -56,7 +67,6 @@ function hostname(url){
 }
 
 function getVideoId(url){
-    console.log('url>', url);
   if(url.startsWith('/')){
     return 'local';
   }else{
@@ -78,6 +88,9 @@ async function downloadThumbnail(v,dest){
   await pipeline(response.body, fs.createWriteStream(destinationFile));
 }
 
+async function slowDown(){
+   return new Promise(resolve => setTimeout(resolve, 333));
+}
 async function downloadSimulation(v,dest){
    return new Promise(resolve => setTimeout(resolve, 111));
 }

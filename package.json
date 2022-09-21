@@ -7,7 +7,7 @@
   "scripts": {
     "save": "git add .; git commit -m 'New Release'; git push; npm version patch; npm publish; git push;",
     "store": "git add .; git commit -m 'New Release'; npm version patch; git push;",
-    "watch": "nodemon --watch $(antwerp read catpea configuration.theme) --watch . -e ejs,css,js,json antwerp build catpea",
+    "watch": "nodemon --watch $(antwerp register catpea) --watch . -e ejs,css,js,json antwerp build catpea",
     "server": "http-server -o -c-1 $(antwerp read catpea configuration.dest)"
   },
   "bin": {
@@ -28,6 +28,7 @@
     "ajv": "^8.11.0",
     "calculate-percent": "^2.1.0",
     "chalk": "^5.0.1",
+    "cheerio": "^1.0.0-rc.12",
     "commander": "^9.4.0",
     "conf": "^10.2.0",
     "copy-newer": "^2.1.2",
@@ -48,6 +49,7 @@
     "ms": "^2.1.3",
     "node-fetch": "^3.2.10",
     "pagination": "^0.4.6",
+    "pretty": "^2.0.0",
     "progress": "^2.0.3",
     "remark": "^14.0.2",
     "sharp": "^0.31.0",

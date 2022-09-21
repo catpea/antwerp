@@ -17,6 +17,5 @@ if (!conf.length) { console.error('key val required'); process.exit(1); }
 const options = Object.fromEntries(['force'].map(key=>([key, opts[key]])))
 
 const c = new npmConf({projectName: 'antwerp'});
-
-c.set(key, val);
+if(val) c.set(key, val);
 console.log(c.get(key));

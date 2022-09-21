@@ -3,6 +3,7 @@ const configuration = {
   type: "object",
   properties: {
     samples: {type: "string"},
+    verbosity: {type: "integer"},
     src: {type: "string"},
     dest: {type: "string"},
     theme: {type: "string"},
@@ -50,8 +51,28 @@ const network = {
   minItems: 1,
   maxItems: 300,
   // additionalItems: false,
-
 };
+
+const covers = {
+  type: "array",
+  items: [
+    {
+      type: "object",
+      properties: {
+        prefix: {type: "string"},
+        width: {type: "integer"},
+        height: {type: "integer"},
+      },
+      required: ['prefix', 'width', 'height'],
+      additionalProperties: false,
+    }
+  ],
+  minItems: 1,
+  maxItems: 12,
+  // additionalItems: false,
+};
+
+
 const alerts = {
   type: "array",
   items: [{type: 'object', anyOf:[
@@ -91,6 +112,7 @@ const schema = {
   type: "object",
   properties: {
     configuration,
+    covers,
     site: {
       type: "object",
       properties: {

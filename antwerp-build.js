@@ -27,11 +27,13 @@ import tiles from './lib/tiles.js';
 import links from './lib/links.js';
 import alerts from './lib/alerts.js';
 import recon from './lib/recon.js';
+import resize from './lib/resize.js';
 import downloadYoutubeThumbnails from './features/download-youtube-thumbnails.js';
 import injectYoutubeThumbnails   from './features/inject-youtube-thumbnails.js';
 import { Command, Option } from 'commander/esm.mjs';
 
 const program = new Command();
+program.option('-v, --verbosity', 'increase verbosity', (value, previous)=>previous++, 0);
 program.option('-f, --force', 'force installation');
 program.option('--remove-unused-files', 'remove unused files');
 program.parse(process.argv);
@@ -42,7 +44,7 @@ const [project] = program.args;
 const configuration = path.join( c.get(project), 'conf.js' );
 
 if (!conf.length) { console.error('configuration file required'); process.exit(1); }
-const options = Object.fromEntries(['force'].map(key=>([key, program.opts()[key]])))
+const options = Object.fromEntries(['force', 'verbosity', 'removeUnusedFiles'].map(key=>([key, program.opts()[key]])))
 
 const db = [];
 const config = await conf(configuration, options);
@@ -50,10 +52,14 @@ const context = Object.assign({db}, config);
 
 log.profile('build');
 await compose(
-  series(src, object, sources, content, order, recon, downloadYoutubeThumbnails, injectYoutubeThumbnails, htmlize, targets, solutions),
+  series(src, object, sources, content, order, htmlize, recon, downloadYoutubeThumbnails, injectYoutubeThumbnails, targets, solutions),
   //parallel(files, posts, browser, tiles, toc, links  )
 )(context)
 log.profile('build');
+
+log.profile('resize');
+await compose(resize)(context)
+log.profile('resize');
 
 log.profile('files');
 await compose(files)(context)
