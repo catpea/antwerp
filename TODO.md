@@ -1,9 +1,9 @@
-- audiobook generator
-- portfolio image generator
+- sh publish.sh to put push and etc
+- sh built-in autio to vido converter ?????
+
 - cache
   - ADD EXPIRED LOGIC TO REBUILD WHEN TIMESTAMPS CHANGE, and not just when files are missing
   - FIXBUG (BUG: NOT RELIABLE) /home/meow/Universe/Development/antwerp/lib/files.js
-- publish.sh to put push and etc
 - AFTER TAKE-OVER: fix /home/meow/Universe/Development/eternia/src/transformers/process-yaml/to-markdown.js youytube template was broken on purpose
 
 ## Then
@@ -16,15 +16,35 @@
 
 
 
+set(
+  key,
+  val,
+  {
+    ttl = this.ttl,
+    noUpdateTTL = this.noUpdateTTL,
+    noDisposeOnSet = this.noDisposeOnSet,
+  } = {}
+) {}
+
+
+{ updateAgeOnGet = this.updateAgeOnGet, ttl = this.ttl } = {}
+
+
+  return expiration === Infinity
+        ? expiration
+        : expiration !== undefined
+        ? Math.max(0, Math.ceil(expiration - now()))
+        : 0
 
 
 
-
-
-
-
-
-
+        *entries() {
+            for (const exp in this.expirations) {
+              for (const key of this.expirations[exp]) {
+                yield [key, this.data.get(key)]
+              }
+            }
+          }
 
 
 

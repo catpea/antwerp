@@ -1,7 +1,8 @@
 import { convert } from 'html-to-text';
 import moment from 'moment';
+import numeral from 'numeral';
 
-export default {iff, plaintext, hostname, timestamp};
+export default {iff, plaintext, hostname, timestamp, numeral};
 
 export function iff(data, payload){
   const result = data.value();

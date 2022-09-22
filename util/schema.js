@@ -6,12 +6,13 @@ const configuration = {
     verbosity: {type: "integer"},
     src: {type: "string"},
     dest: {type: "string"},
+    video: {type: "string"},
     theme: {type: "string"},
     pp: {type: "integer"},
     removeUnusedFiles: {type: "boolean"},
     force: {type: "boolean"},
   },
-  required: ['src', 'dest', 'theme', 'samples', 'pp'],
+  required: ['src', 'dest', 'video', 'theme', 'samples', 'pp'],
   additionalProperties: false,
 }
 

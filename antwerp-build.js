@@ -28,9 +28,13 @@ import links from './lib/links.js';
 import alerts from './lib/alerts.js';
 import recon from './lib/recon.js';
 import resize from './lib/resize.js';
+import summary from './lib/summary.js';
+import audiolist from './lib/audiolist.js';
+import video from './lib/video.js';
 import downloadYoutubeThumbnails from './features/download-youtube-thumbnails.js';
 import injectYoutubeThumbnails   from './features/inject-youtube-thumbnails.js';
 import youtubeThumbnailCover from './features/youtube-thumbnail-cover.js';
+import portfolioJpg from './features/portfolio-jpg.js';
 import { Command, Option } from 'commander/esm.mjs';
 
 const program = new Command();
@@ -70,6 +74,10 @@ log.profile('posts');
 await compose(posts)(context)
 log.profile('posts');
 
+log.profile('summary');
+await compose(summary)(context)
+log.profile('summary');
+
 log.profile('browser');
 await compose(browser)(context)
 log.profile('browser');
@@ -89,6 +97,18 @@ log.profile('toc');
 log.profile('links');
 await compose(links)(context)
 log.profile('links');
+
+log.profile('portfolioJpg');
+await compose(portfolioJpg)(context)
+log.profile('portfolioJpg');
+
+log.profile('audiolist');
+await compose(audiolist)(context)
+log.profile('audiolist');
+
+log.profile('video');
+await compose(video)(context)
+log.profile('video');
 
 
 function compose(...stack){ return async (context) => { for(const instruction of stack) await instruction(context) } }
