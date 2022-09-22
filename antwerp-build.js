@@ -30,6 +30,7 @@ import recon from './lib/recon.js';
 import resize from './lib/resize.js';
 import downloadYoutubeThumbnails from './features/download-youtube-thumbnails.js';
 import injectYoutubeThumbnails   from './features/inject-youtube-thumbnails.js';
+import youtubeThumbnailCover from './features/youtube-thumbnail-cover.js';
 import { Command, Option } from 'commander/esm.mjs';
 
 const program = new Command();
@@ -52,7 +53,7 @@ const context = Object.assign({db}, config);
 
 log.profile('build');
 await compose(
-  series(src, object, sources, content, order, htmlize, recon, downloadYoutubeThumbnails, injectYoutubeThumbnails, targets, solutions),
+  series(src, object, sources, content, order, htmlize, recon, downloadYoutubeThumbnails, youtubeThumbnailCover, injectYoutubeThumbnails, targets, solutions),
   //parallel(files, posts, browser, tiles, toc, links  )
 )(context)
 log.profile('build');
