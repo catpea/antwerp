@@ -10,7 +10,8 @@ import chalk from 'chalk';
 const {range, chunk, chain, partition, indexOf, takeRight, take, reverse, difference} = lodash;
 import progress from '../util/progress.js';
 
-export default async function main({db, configuration:{pp, dest, theme}, site}){
+
+export default async function downloadYoutubeThumbnails({db, configuration:{pp, dest, theme}, site}){
 
   for (const record of db){
     if(record.attr.features.youtubeThumbnails && record.attr.links) await downloadThumbnails(record);

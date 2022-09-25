@@ -14,7 +14,7 @@ import util from 'util';
 import child_process from 'child_process';
 const execFile = util.promisify(child_process.execFile);
 
-export default async function main({db, covers, configuration:{pp, dest, theme}, site}){
+export default async function youtubeThumbnailCover({db, covers, configuration:{pp, dest, theme}, site}){
   // const list = db.filter(record=>(record.attr.features.youtubeThumbnails && record.attr.links));
   // // filter this list further with const exists = await fs.pathExists(dest); calvulation
   //

@@ -13,7 +13,7 @@ import progress from '../util/progress.js';
 import * as cheerio from 'cheerio';
 import pretty from "pretty";
 
-export default async function main({db, configuration:{pp, dest, theme}, site}){
+export default async function injectYoutubeThumbnails({db, configuration:{pp, dest, theme}, site}){
   log.info('Injecting YouTube Thumbnails');
   const bar = progress(`rewriting HTML [:bar] :rate/tpf :percent :etas`, db.length);
   for (const record of db){

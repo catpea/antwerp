@@ -14,56 +14,33 @@ import util from 'util';
 import child_process from 'child_process';
 const execFile = util.promisify(child_process.execFile);
 
-export default async function main({db, configuration:{pp, dest, theme}, site}){
+export default async function portfolioJpg({db, configuration:{pp, dest, theme}, site}){
+
+  const targetLocation = path.join(dest, 'portfolio.jpg');
+  const prefix = 'sm-';
   const selected = db
-  .map(record=>record.attr.features.portfolioJpg?['-label', '#'+record.number , path.join(record.file.files.src,'lg-'+record.attr.image)]:false)
-  .filter(i=>i)
-  await createCover(selected, path.join(dest, 'portfolio.jpg'))
+  .filter(record=>record.attr.features.portfolioJpg)
+  .filter(record=>record.attr.image)
+  .map(record=>path.join(record.file.files.src,prefix+record.attr.image)).filter(i=>i)
+  if(selected.length>1) await createCover(selected, targetLocation);
+
 }
 
-async function createCover(files,dest){
-
-  if(!files.length) return;
+async function createCover(selected, dest, square = false){
+  const command = 'montage';
+  const args = {
+    '-background': '#f96982',
+    '_sources': square?takeRight(selected, Math.pow(tile,2)):selected,
+    '-tile': (square?parseInt(Math.sqrt(selected.length)):Math.ceil(Math.sqrt(selected.length))) + 'x',
+    '-geometry': '+0+0',
+    '_destination': dest,
+  }
 
   try {
-    let tile = parseInt(Math.sqrt(files.length)); // we cut off whatever does not make a neat square. - Math.sqrt(25) = 5 it gives the x or x*x that returns 25. parse int is used to remove remainder and make a perfect quare.
-    const command = 'montage';
-    const commandArguments = [
-      '-background', '#000000',
-      '-fill', '#f96982',
-      '-pointsize', '9',
-      '$SOURCES',
-      '-geometry', '700x700+10', // https://imagemagick.org/Usage/montage/ ... "Geometry - Tile Size and Image Resizing"
-      '-tile', `$TILE`,
-      '$DESTINATION'
-    ]
-    .map(i=>i==='$TILE'?`${tile}x`:i)
-    .map(i=>i==='$DESTINATION'?dest:i);
-    commandArguments.splice(commandArguments.indexOf('$SOURCES'), 1, ...takeRight(files, Math.pow(tile,2)).flat() ); // Math.pow(tile,2) just means tile*tile which give that perfect square.
-    const { stdout } = await execFile(command, commandArguments);
+    const { stdout } = await execFile(command, Object.entries(args).map(([k,v])=>[k.startsWith('_')?undefined:k,v]).flat(2).filter(i=>i));
     if(stdout) console.log(stdout);
   } catch (e){
     console.log(e);
   }
 
-  try {
-    const command = 'convert';
-    const commandArguments = [
-      dest,
-      '-resize',
-      '5000x5000>',
-      '-size',
-      '5000x5000',
-      'xc:black',
-      '+swap',
-      '-gravity',
-      'center',
-      '-composite',
-      dest
-    ];
-    const { stdout } = await execFile(command, commandArguments);
-    if(stdout) console.log(stdout);
-  } catch (e){
-    console.log(e);
-  }
 }

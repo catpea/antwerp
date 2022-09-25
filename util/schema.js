@@ -8,11 +8,12 @@ const configuration = {
     dest: {type: "string"},
     video: {type: "string"},
     theme: {type: "string"},
+    cache: {type: "string"},
     pp: {type: "integer"},
     removeUnusedFiles: {type: "boolean"},
     force: {type: "boolean"},
   },
-  required: ['src', 'dest', 'video', 'theme', 'samples', 'pp'],
+  required: ['src', 'dest', 'video', 'theme', 'samples', 'cache', 'pp'],
   additionalProperties: false,
 }
 

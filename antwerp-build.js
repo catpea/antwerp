@@ -31,11 +31,15 @@ import resize from './lib/resize.js';
 import summary from './lib/summary.js';
 import audiolist from './lib/audiolist.js';
 import video from './lib/video.js';
+import checker from './lib/checker.js';
+import attachments from './lib/attachments.js';
 import downloadYoutubeThumbnails from './features/download-youtube-thumbnails.js';
 import injectYoutubeThumbnails   from './features/inject-youtube-thumbnails.js';
 import youtubeThumbnailCover from './features/youtube-thumbnail-cover.js';
 import portfolioJpg from './features/portfolio-jpg.js';
 import { Command, Option } from 'commander/esm.mjs';
+
+import {compose, cache, series, parallel, ask} from './util/whoopdedo.js';
 
 const program = new Command();
 program.option('-v, --verbosity', 'increase verbosity', (value, previous)=>previous++, 0);
@@ -55,62 +59,83 @@ const db = [];
 const config = await conf(configuration, options);
 const context = Object.assign({db}, config);
 
+await Promise.all(Object.entries(context.configuration).filter(([k,v])=>(typeof v==='string')).filter(([k,v])=>v.startsWith('/')).map(([k,v])=>v).map(async v=>await fs.ensureDir(v)));
+
 log.profile('build');
+
+async function tryCache(context){
+  const changed = false;
+
+
+  //
+  if(changed){
+    return;
+  }else{
+    // context.db = await fs.readJson(path.join(context.configuration.cache, 'db.json'));
+    // return true;
+  }
+}
+
+async function saveCache({db}){
+  await fs.writeJson(path.join(context.configuration.cache, 'db.json'), db);
+}
+async function hasPortfolioSelectionChanged({db}){
+  //await fs.writeJson(path.join(context.configuration.cache, 'db.json'), db);
+}
+async function ifImagesChanged({db}){
+  //await fs.writeJson(path.join(context.configuration.cache, 'db.json'), db);
+}
+
+
+async function newRecord(){}
+async function ifNewWarriorAdded(){}
+
+
+// PROGRAM FLOW
+
+// 1 series and parallel are important concepts that must be clear and never avoided,
+// 2 cache is important, but should be kept away from the program flow, as it will complicate it.
+
 await compose(
-  series(src, object, sources, content, order, htmlize, recon, downloadYoutubeThumbnails, youtubeThumbnailCover, injectYoutubeThumbnails, targets, solutions),
-  //parallel(files, posts, browser, tiles, toc, links  )
-)(context)
-log.profile('build');
 
-log.profile('resize');
-await compose(resize)(context)
-log.profile('resize');
+  cache(
+    tryCache,
+    series(
+      src,
+      object,
+      sources,
+      content,
+      order,
+      htmlize,
+      checker,
+      recon,
+      cache(
+        ifNewWarriorAdded,
+        downloadYoutubeThumbnails
+      ),
+      youtubeThumbnailCover,
+      injectYoutubeThumbnails,
+      targets,
+      attachments,
+      solutions,
+      saveCache,
+    ),
+  ),
 
-log.profile('files');
-await compose(files)(context)
-log.profile('files');
+  resize,
+  files,
 
-log.profile('posts');
-await compose(posts)(context)
-log.profile('posts');
+  series(
+    posts,
+    summary,
+    browser,
+    tiles,
+    alerts,
+    toc,
+    links,
+      cache(hasPortfolioSelectionChanged, portfolioJpg),
+    audiolist,
+    video,
+  )
 
-log.profile('summary');
-await compose(summary)(context)
-log.profile('summary');
-
-log.profile('browser');
-await compose(browser)(context)
-log.profile('browser');
-
-log.profile('tiles');
-await compose(tiles)(context)
-log.profile('tiles');
-
-log.profile('alerts');
-await compose(alerts)(context)
-log.profile('alerts');
-
-log.profile('toc');
-await compose(toc)(context)
-log.profile('toc');
-
-log.profile('links');
-await compose(links)(context)
-log.profile('links');
-
-log.profile('portfolioJpg');
-await compose(portfolioJpg)(context)
-log.profile('portfolioJpg');
-
-log.profile('audiolist');
-await compose(audiolist)(context)
-log.profile('audiolist');
-
-log.profile('video');
-await compose(video)(context)
-log.profile('video');
-
-
-function compose(...stack){ return async (context) => { for(const instruction of stack) await instruction(context) } }
-function series(...stack){ return async (context) => { for(const instruction of stack) await instruction(context) } }
-function parallel(...stack){ return async (context) => Promise.all( stack.map(instruction=>instruction(context))) }
+)(context);

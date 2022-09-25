@@ -1,5 +1,5 @@
 - sh publish.sh to put push and etc
-- sh built-in autio to vido converter ?????
+
 
 - cache
   - ADD EXPIRED LOGIC TO REBUILD WHEN TIMESTAMPS CHANGE, and not just when files are missing
@@ -9,11 +9,7 @@
 ## Then
 - IPFS UPLOAD
 - upload the whole website to INTERNET ARCHIVE as a zip?
-
-
-
-
-
+ 
 
 
 set(
