@@ -33,6 +33,7 @@ import audiolist from './lib/audiolist.js';
 import video from './lib/video.js';
 import checker from './lib/checker.js';
 import attachments from './lib/attachments.js';
+import snippets from './lib/snippets.js';
 import downloadYoutubeThumbnails from './features/download-youtube-thumbnails.js';
 import injectYoutubeThumbnails   from './features/inject-youtube-thumbnails.js';
 import youtubeThumbnailCover from './features/youtube-thumbnail-cover.js';
@@ -59,9 +60,7 @@ const db = [];
 const config = await conf(configuration, options);
 const context = Object.assign({db}, config);
 
-await Promise.all(Object.entries(context.configuration).filter(([k,v])=>(typeof v==='string')).filter(([k,v])=>v.startsWith('/')).map(([k,v])=>v).map(async v=>await fs.ensureDir(v)));
-
-log.profile('build');
+await Promise.all(Object.entries(context.configuration).filter(([k,v])=>(typeof v==='string')).filter(([k,v])=>v.startsWith('/')) .filter(([k,v])=>!v.match(/\.[a-z0-9]{2,4}$/)) .map(([k,v])=>v).map(async v=>await fs.ensureDir(v)));
 
 async function tryCache(context){
   const changed = false;
@@ -132,6 +131,7 @@ await compose(
     tiles,
     alerts,
     toc,
+    snippets,
     links,
       cache(hasPortfolioSelectionChanged, portfolioJpg),
     audiolist,

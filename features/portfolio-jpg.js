@@ -35,12 +35,6 @@ async function createCover(selected, dest, square = false){
     '-geometry': '+0+0',
     '_destination': dest,
   }
-
-  try {
-    const { stdout } = await execFile(command, Object.entries(args).map(([k,v])=>[k.startsWith('_')?undefined:k,v]).flat(2).filter(i=>i));
-    if(stdout) console.log(stdout);
-  } catch (e){
-    console.log(e);
-  }
-
+  const { stdout } = await execFile(command, Object.entries(args).map(([k,v])=>[k.startsWith('_')?undefined:k,v]).flat(2).filter(i=>i));
+  if(stdout) console.log(stdout);
 }

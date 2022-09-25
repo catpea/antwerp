@@ -9,6 +9,7 @@ const configuration = {
     video: {type: "string"},
     theme: {type: "string"},
     cache: {type: "string"},
+    snippets: {type: "string"},
     pp: {type: "integer"},
     removeUnusedFiles: {type: "boolean"},
     force: {type: "boolean"},
