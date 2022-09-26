@@ -1,16 +1,37 @@
-// import ProgressBar from 'progress';
-// export default function bar(line, length){
-//   return new ProgressBar(line, {
-//     complete: '=',
-//     incomplete: ' ',
-//     head:'>',
-//     clear: true,
-//     width: 55,
-//     total: length
-//   });
-// }
+import calculatePercent from 'calculate-percent';
+import chalk from 'chalk';
+import {debounce} from 'lodash-es';
+import ProgressBar from 'progress';
+
+class SimpleProgressBar {
+
+  counter = 0;
+
+  constructor(name, line, options){
+    this.name = name;
+    this.line = line;
+    this.options = options;
+    this.max = options.total;
+    this.last = new Date().getTime();
+    this.debounced = debounce(this.bounced, 1000);
+  }
+
+  bounced(){
+    console.log( chalk.cyan(this.name + ': ') + chalk.yellow(calculatePercent(this.counter, this.max) + '%') );
+  }
+
+  tick(){
+    this.counter++;
+    this.counter==this.max?this.debounced.flush():this.debounced();
+  }
+
+}
 
 
-export default function bar(){
-  return {tick:function(){}}
+export default function bar(name, line, length, mode){
+  if(mode == 'series'){
+    return new ProgressBar(name +' ' + line, { complete: '=', incomplete: ' ', head:'>', clear: true, width: 55, total: length });
+  } else if (mode == 'parallel'){
+    return new SimpleProgressBar(name, line, { complete: '=', incomplete: ' ', head:'>', clear: true, width: 55, total: length });
+  }
 }

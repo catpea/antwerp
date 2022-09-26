@@ -124,7 +124,7 @@ await compose(
   resize,
   files,
 
-  series(
+  parallel(
     posts,
     summary,
     browser,

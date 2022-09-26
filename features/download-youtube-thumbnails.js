@@ -11,15 +11,15 @@ const {range, chunk, chain, partition, indexOf, takeRight, take, reverse, differ
 import progress from '../util/progress.js';
 
 
-export default async function downloadYoutubeThumbnails({db, configuration:{pp, dest, theme}, site}){
+export default async function downloadYoutubeThumbnails({db, configuration:{pp, dest, theme}, site}, options){
 
   for (const record of db){
-    if(record.attr.features.youtubeThumbnails && record.attr.links) await downloadThumbnails(record);
+    if(record.attr.features.youtubeThumbnails && record.attr.links) await downloadThumbnails(record, options);
   }
 
 }
 
-async function downloadThumbnails(record){
+async function downloadThumbnails(record, options){
 
     if(!record.attr.links) return;
 
@@ -40,7 +40,7 @@ async function downloadThumbnails(record){
     const testing = true;
 
     const missingFiles = difference(requiredFiles, existingFiles);
-    const bar = progress(`downloading thumbnails [:bar] :rate/tps :percent :etas`, missingFiles.length);
+    const bar = progress(`downloading thumbnails`, `[:bar] :rate/tps :percent :etas`, missingFiles.length, options.progress);
 
     for(const v of missingFiles){
       if(testing){

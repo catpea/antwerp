@@ -14,7 +14,7 @@ import util from 'util';
 import child_process from 'child_process';
 const execFile = util.promisify(child_process.execFile);
 
-export default async function youtubeThumbnailCover({db, covers, configuration:{pp, dest, theme}, site}){
+export default async function youtubeThumbnailCover({db, covers, configuration:{pp, dest, theme}, site}, options){
   // const list = db.filter(record=>(record.attr.features.youtubeThumbnails && record.attr.links));
   // // filter this list further with const exists = await fs.pathExists(dest); calvulation
   //
@@ -36,7 +36,7 @@ export default async function youtubeThumbnailCover({db, covers, configuration:{
     if(featureRequested&&!exists) selected.push(record)
   }
 
-  const bar = progress(`making covers [:bar] :rate/tps :percent :etas`, selected.length);
+  const bar = progress(`making covers`, `[:bar] :rate/tps :percent :etas`, selected.length, options.progress);
   for (const record of selected){
     await makeCover(record, {covers});
     bar.tick()

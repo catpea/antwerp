@@ -11,7 +11,7 @@ function worker(stack){
     for(const instruction of stack){
       // const start_time = process.hrtime();
       const start = Date.now()
-      const response = await instruction(context);
+      const response = await instruction(context, {progress:'series'});
       const stop = Date.now()
       // const end_time = process.hrtime(start_time);
       // console.log(`#${counter++}: ${instruction.name} (${end_time[0]} second, ${end_time[1].toLocaleString('en-US')} nanoseconds)`);
@@ -32,7 +32,7 @@ function root(...stack){
   return worker(stack)
 }
 
-export function parallel (...stack){ return async (context) => Promise.all( stack.map(instruction=>instruction(context))) }
+export function parallel (...stack){ return async (context) => Promise.all( stack.map(instruction=>instruction(context, {progress:'parallel'}))) }
 
 export const ask = root;
 

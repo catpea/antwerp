@@ -13,9 +13,9 @@ import progress from '../util/progress.js';
 import * as cheerio from 'cheerio';
 import pretty from "pretty";
 
-export default async function injectYoutubeThumbnails({db, configuration:{pp, dest, theme}, site}){
+export default async function injectYoutubeThumbnails({db, configuration:{pp, dest, theme}, site}, options){
   log.info('Injecting YouTube Thumbnails');
-  const bar = progress(`rewriting HTML [:bar] :rate/tpf :percent :etas`, db.length);
+  const bar = progress(`rewriting HTML`, `[:bar] :rate/tpf :percent :etas`, db.length, options.progress);
   for (const record of db){
     if( record.attr.features.youtubeThumbnails ){
       await rewriteLinks(record);
