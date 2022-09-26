@@ -3,9 +3,48 @@ Antwerp The Static Archive Site Generator
 
 ## Usage
 
-- ```antwerp register catpea /home/usr/my-project/``` to register the project.
-- ```antwerp new catpea westland-warrior --title "The Great Being"``` to create a new post.
-- ```antwerp build catpea``` to (re)generate the website
+```
+project: catpea
+
+      src: /home/user/catpea-project/database
+    video: /home/user/catpea-project/dist/video/
+     dest: /home/user/catpea-project/dist/website/
+  samples: /home/user/catpea-project/samples
+    theme: /home/user/catpea-project/theme
+    cache: /home/user/catpea-project/.cache
+ snippets: /home/user/catpea-project/snippets.md
+
+Examples:
+
+antwerp register my-project /path/to/data
+#points my-project to /path/to/data configuration directory
+
+antwerp new catpea furkies-purrkies --title "My New Furkies Purrkies Title"
+#builds a new record in /home/user/catpea-project/database/furkies-purrkies
+
+antwerp new catpea westland-warrior --title "My New Westland Warrior Title"
+#builds a new record in /home/user/catpea-project/database/westland-warrior
+
+antwerp build catpea
+#builds website in /home/user/catpea-project/dist/website/
+
+antwerp read catpea configuration.snippets
+#prints /home/user/catpea-project/snippets.md
+
+Usage: antwerp [options] [command]
+
+Options:
+  -V, --version                       output the version number
+  -h, --help                          display help for command
+
+Commands:
+  register [project-name] [data-dir]  register a new project pointing it to a data/registry directory
+  new [project-name] [creator-name]   create a new/blank record in the specified database
+  build [project-name]                build a registered project
+  read [project] [path]               read a configuration value with dotted notation, ex: configuration.src
+  help                                clone a repository into a newly created directory
+
+```
 
 ## Images
 
@@ -44,17 +83,17 @@ draft: false
 ```JSON
 
 {
-  "src": "/home/meow/Universe/Development/db/dist/new-database/furkies-purrkies/poem-0934",
+  "src": "/home/user/db/dist/new-database/furkies-purrkies/poem-0934",
   "file": {
     "index": {
       "name": "index.md",
-      "src": "/home/meow/Universe/Development/db/dist/new-database/furkies-purrkies/poem-0934/index.md",
+      "src": "/home/user/db/dist/new-database/furkies-purrkies/poem-0934/index.md",
       "size": 2424,
       "atime": "2022-09-21T19:01:55.325Z",
       "mtime": "2022-09-21T19:01:55.345Z",
       "ctime": "2022-09-21T19:01:55.345Z",
       "dest": {
-        "target": "/home/meow/Universe/Development/db/dist/new-website/permalink/3a6f4d53-50a6-4f33-8579-872ac5b026ac/index.html",
+        "target": "/home/user/db/dist/new-website/permalink/3a6f4d53-50a6-4f33-8579-872ac5b026ac/index.html",
         "missing": true,
         "expired": false,
         "update": true
@@ -62,14 +101,14 @@ draft: false
     },
     "files": {
       "name": "files",
-      "src": "/home/meow/Universe/Development/db/dist/new-database/furkies-purrkies/poem-0934/files",
+      "src": "/home/user/db/dist/new-database/furkies-purrkies/poem-0934/files",
       "directory": true,
       "size": 4096,
       "atime": "2022-09-21T19:01:55.348Z",
       "mtime": "2022-09-21T19:01:55.500Z",
       "ctime": "2022-09-21T19:01:55.500Z",
       "dest": {
-        "target": "/home/meow/Universe/Development/db/dist/new-website/permalink/3a6f4d53-50a6-4f33-8579-872ac5b026ac/files",
+        "target": "/home/user/db/dist/new-website/permalink/3a6f4d53-50a6-4f33-8579-872ac5b026ac/files",
         "missing": true,
         "expired": false,
         "update": true
