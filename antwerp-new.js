@@ -4,6 +4,7 @@ import path from 'path';
 import { Command, Option } from 'commander/esm.mjs';
 import conf from './util/conf.js';
 import {camelCase} from 'lodash-es';
+import frontMatter from 'front-matter';
 const program = new Command();
 program.option('-f, --force', 'force installation');
 // program.requiredOption('-s, --source [name]', 'specify source database');
