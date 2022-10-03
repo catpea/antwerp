@@ -37,7 +37,7 @@ async function downloadThumbnails(record, options){
       .filter(i=>i)
       .map(a=>a[1])
 
-    const testing = true;
+    const testing = false;
 
     const missingFiles = difference(requiredFiles, existingFiles);
     const bar = progress(`downloading thumbnails`, `[:bar] :rate/tps :percent :etas`, missingFiles.length, options.progress);
@@ -90,7 +90,7 @@ async function downloadThumbnail(v,dest){
 }
 
 async function slowDown(){
-   return new Promise(resolve => setTimeout(resolve, 333));
+   return new Promise(resolve => setTimeout(resolve, 100));
 }
 async function downloadSimulation(v,dest){
    return new Promise(resolve => setTimeout(resolve, 111));

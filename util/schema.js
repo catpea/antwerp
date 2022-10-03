@@ -13,6 +13,7 @@ const configuration = {
     pp: {type: "integer"},
     removeUnusedFiles: {type: "boolean"},
     force: {type: "boolean"},
+    debug: {type: "boolean"},
   },
   required: ['src', 'dest', 'video', 'theme', 'samples', 'cache', 'pp'],
   additionalProperties: false,
@@ -130,7 +131,7 @@ const schema = {
     creators,
   },
   required: ['configuration', 'site'],
-  additionalProperties: false,
+  additionalProperties: true,
 }
 
 export default schema;

@@ -19,6 +19,7 @@ program
   .command('register [project-name] [data-dir]', 'register a new project pointing it to a data/registry directory')
   .command('new [project-name] [creator-name]', 'create a new/blank record in the specified database')
   .command('build [project-name]', 'build a registered project')
+  .command('upload [project-name]', 'upload and publish your project')
   .command('read [project] [path]', 'read a configuration value with dotted notation, ex: configuration.src')
 
   .command('help', { isDefault: true })

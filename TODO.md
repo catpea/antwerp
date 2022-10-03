@@ -1,5 +1,6 @@
 - sh publish.sh to put push and etc
 
+- dupes in yt posts but just create dupes.js to see if there are doubvle links on a pagfe.
 
 - cache
   - ADD EXPIRED LOGIC TO REBUILD WHEN TIMESTAMPS CHANGE, and not just when files are missing

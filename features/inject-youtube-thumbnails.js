@@ -39,7 +39,7 @@ async function rewriteLinks(record){
         .append(`<img src="files/yid-${v}.jpg">`)
         // .wrap(`<p>`)
         .parent()
-        .before(`<h2 id="${kebabCase(title)}">${title}</h2>`);
+        .before(`<h4 id="${kebabCase(title)}">${title}</h4>`);
 
       return el;
     });

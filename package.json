@@ -57,6 +57,7 @@
     "pretty": "^2.0.0",
     "progress": "^2.0.3",
     "remark": "^14.0.2",
+    "rsend": "file:../rsend",
     "sharp": "^0.31.0",
     "syntax-error": "^1.4.0",
     "turndown": "^7.1.1",

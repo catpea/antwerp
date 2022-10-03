@@ -2,6 +2,7 @@ import calculatePercent from 'calculate-percent';
 import chalk from 'chalk';
 import {debounce} from 'lodash-es';
 import ProgressBar from 'progress';
+import log from './log.js';
 
 class SimpleProgressBar {
 
@@ -17,10 +18,11 @@ class SimpleProgressBar {
   }
 
   bounced(){
-    console.log( chalk.cyan(this.name + ': ') + chalk.yellow(calculatePercent(this.counter, this.max) + '%') );
+    log.info( chalk.cyan(this.name + ': ') + chalk.yellow(calculatePercent(this.counter, this.max) + '%') );
   }
 
   tick(){
+    if (this.counter == 0) this.bounced();
     this.counter++;
     this.counter==this.max?this.debounced.flush():this.debounced();
   }
