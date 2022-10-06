@@ -36,7 +36,7 @@ async function rewriteLinks(record){
       const v = getVideoId(url);
       $(el)
         .empty()
-        .append(`<img src="files/yid-${v}.jpg">`)
+        .append(`<div class="p-md-5 m-xl-5 border-rounded"><img class="w-100 rounded shadow" src="files/yid-${v}.jpg"></div>`)
         // .wrap(`<p>`)
         .parent()
         .before(`<h4 id="${kebabCase(title)}">${title}</h4>`);

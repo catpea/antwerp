@@ -13,6 +13,7 @@ program.option('-f, --force', 'force installation');
 program.option('-t, --title [name]', 'specify title');
 program.option('-a, --after [name]', 'specify position');
 program.option('-d, --debug', 'debug or dry run where nothing is changed.');
+program.option('-s, --silent', 'debug stuff, don\'t print payload.');
 program.parse(process.argv);
 
 import npmConf from 'conf';
@@ -30,7 +31,12 @@ const config = await conf(configuration, options);
 
 for (const profile of config.publish.profiles) {
   const prescription = await rsend(merge({}, profile, { src: { dir: config.configuration.dest }}), config.configuration);
-  console.log(prescription.script.join('\n'));
+  // console.log(prescription.script.join('\n'));
+  if (opts.silent){
+    // don't print
+  }else{
+    console.log(prescription.script);
+  }
 }
 
  

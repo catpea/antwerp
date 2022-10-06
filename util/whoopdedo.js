@@ -18,7 +18,7 @@ function worker(stack){
       // console.log(`#${counter++}: ${instruction.name} (${(stop - start)/1000} seconds)`);
       if(instruction.name){
         if(!stats[run]) stats[run]={};
-        stats[run][instruction?.name] = (stop - start)/1000;
+        stats[run][instruction.name] = (stop - start)/1000;
       }
 
       if(response === true){
@@ -47,6 +47,5 @@ export function compose (...stack){
       await worker(stack)(context);
       // console.log( Object.entries(stats[run]).sort((a, b) => b[1] - a[1]).map(([k,v])=>`${pad(v,5)}s: ${k}`));
       console.log( Object.entries(stats[run]).sort((a, b) => b[1] - a[1]) );
-      console.log('DONE!');
     }
 }
