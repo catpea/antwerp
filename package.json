@@ -6,10 +6,7 @@
   "main": "antwerp.js",
   "scripts": {
     "tar": "git archive --format=tar --output ../antwerp.tar HEAD",
-    "save": "git add .; git commit -m 'New Release'; git push; npm version patch; npm publish; git push;",
-    "store": "git add .; git commit -m 'New Release'; npm version patch; git push;",
-    "watch": "nodemon --watch $(antwerp register catpea) --watch . -e ejs,css,js,json antwerp build catpea",
-    "server": "http-server -o -c-1 $(antwerp read catpea configuration.dest)"
+    "save": "git add .; git commit -m 'New Release'; git push; npm version patch; npm publish; git push;"
   },
   "bin": {
     "antwerp": "./antwerp.js"
