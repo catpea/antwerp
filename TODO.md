@@ -1,4 +1,12 @@
-- sh publish.sh to put push and etc
+Pull Out Node Modules
+rsend
+  - read remote
+  - smart sum
+antwerp
+  - /util/whooptiedoo
+
+
+
 
 - dupes in yt posts but just create dupes.js to see if there are doubvle links on a pagfe.
 

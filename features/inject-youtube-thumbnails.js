@@ -17,7 +17,7 @@ export default async function injectYoutubeThumbnails({db, configuration:{pp, de
   log.info('Injecting YouTube Thumbnails');
   const bar = progress(`rewriting HTML`, `[:bar] :rate/tpf :percent :etas`, db.length, options.progress);
   for (const record of db){
-    if( record.attr.features.youtubeThumbnails ){
+    if (record.attr.features.ytcover ){
       await rewriteLinks(record);
     }
     bar.tick();

@@ -14,7 +14,7 @@ import progress from '../util/progress.js';
 export default async function downloadYoutubeThumbnails({db, configuration:{pp, dest, theme}, site}, options){
 
   for (const record of db){
-    if(record.attr.features.youtubeThumbnails && record.attr.links) await downloadThumbnails(record, options);
+    if (record.attr.features.ytcover && record.attr.links) await downloadThumbnails(record, options);
   }
 
 }

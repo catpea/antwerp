@@ -1,3 +1,13 @@
+// import debug from 'debug';
+// import bug from 'debug';
+// const log = bug('antwerp');
+// if (debug) bug.enable('rsend');
+// export default {
+//   log:log,
+//   info:log,
+//   error:log
+// }
+
 import winston from 'winston';
 import {difference, intersection, kebabCase} from 'lodash-es';
 

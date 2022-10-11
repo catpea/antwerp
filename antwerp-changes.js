@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 import fs from 'fs-extra';
 import path from 'path';
+
 import invariant from 'invariant';
-import rsend from 'rsend';
 import { Command, Option } from 'commander/esm.mjs';
+import { camelCase, merge } from 'lodash-es';
+
+import rsend from 'rsend';
 import conf from './util/conf.js';
-import {camelCase, merge} from 'lodash-es';
-import frontMatter from 'front-matter';
+import log from './util/log.js';
+
 const program = new Command();
 program.option('-t, --title [name]', 'specify title');
 program.option('-a, --after [name]', 'specify position');
@@ -28,9 +31,12 @@ const locations = [];
 for (const profile of config.publish.profiles) {
   const prescription = await rsend(merge({}, profile, { src: { dir: config.configuration.dest }}), config.configuration);
   const location = path.resolve([profile.name, profile.batchfile].join('-'));
-  await fs.writeFile(location, prescription.script.trim() + '\n');
+  let contents = prescription.script.trim()
+  await fs.writeFile(location, contents.length ? contents + '\n':'');
   locations.push(location);
+  if (opts.debug) log.info([location + ` (${contents.length} bytes)`, contents.length ? contents + '\n' : '(empty)'].join('\n'))
+  // if ( opts.debug ) console.log( prescription.normal.filter(i=>i.includes('check')) );
 }
+
 console.log(locations.map(i=>JSON.stringify(i)).join(' '));
 
- 
