@@ -34,6 +34,7 @@ import video from './lib/video.js';
 import checker from './lib/checker.js';
 import attachments from './lib/attachments.js';
 import snippets from './lib/snippets.js';
+import lectures from './lib/lectures.js';
 import downloadYoutubeThumbnails from './features/download-youtube-thumbnails.js';
 import injectYoutubeThumbnails   from './features/inject-youtube-thumbnails.js';
 import youtubeThumbnailCover from './features/youtube-thumbnail-cover.js';
@@ -131,6 +132,7 @@ await compose(
     tiles,
     alerts,
     toc,
+    lectures,
     snippets,
     links,
       cache(hasPortfolioSelectionChanged, portfolioJpg),

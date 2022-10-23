@@ -38,5 +38,5 @@ for (const profile of config.publish.profiles) {
   // if ( opts.debug ) console.log( prescription.normal.filter(i=>i.includes('check')) );
 }
 
-console.log(locations.map(i=>JSON.stringify(i)).join(' '));
+console.log(locations.map(i=>i).join(' '));
 

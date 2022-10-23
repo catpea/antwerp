@@ -73,7 +73,9 @@ function getVideoId(url){
   }else{
     try{
       const myURL = new URL(url);
-      return myURL.searchParams.get('v');
+      const response = myURL.searchParams.get('v');
+      // console.log(response);
+      return response;
     }catch{
       return 'n/a'
     }
@@ -83,6 +85,8 @@ function getVideoId(url){
 async function downloadThumbnail(v,dest){
   const downloadUrl = `https://img.youtube.com/vi/${v}/0.jpg`;
   const destinationFile = path.join(dest, `yid-${v}.jpg`);
+  // console.log(downloadUrl, destinationFile);
+  // return
   const response = await fetch(downloadUrl);
   // spawn('curl', [downloadUrl, '--output', destinationFile]);
   if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
