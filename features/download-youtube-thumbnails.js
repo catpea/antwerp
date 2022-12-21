@@ -11,6 +11,30 @@ const {range, chunk, chain, partition, indexOf, takeRight, take, reverse, differ
 import progress from '../util/progress.js';
 
 
+
+
+
+
+
+import http from 'node:http';
+import https from 'node:https';
+
+const httpAgent = new http.Agent({
+	keepAlive: true,
+  family: 4,
+});
+const httpsAgent = new https.Agent({
+	keepAlive: true,
+  family: 4,
+});
+
+
+
+
+
+
+
+
 export default async function downloadYoutubeThumbnails({db, configuration:{pp, dest, theme}, site}, options){
 
   for (const record of db){
@@ -87,7 +111,25 @@ async function downloadThumbnail(v,dest){
   const destinationFile = path.join(dest, `yid-${v}.jpg`);
   // console.log(downloadUrl, destinationFile);
   // return
-  const response = await fetch(downloadUrl);
+
+
+  const options = {
+
+  	headers: {
+      'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:106.0) Gecko/20100101 Firefox/106.0'
+    },            // Request headers. format is the identical to that accepted by the Headers constructor (see below)
+
+    agent: function(_parsedURL) {
+   		if (_parsedURL.protocol == 'http:') {
+   			return httpAgent;
+   		} else {
+   			return httpsAgent;
+   		}
+   	}
+}
+
+
+  const response = await fetch(downloadUrl, options);
   // spawn('curl', [downloadUrl, '--output', destinationFile]);
   if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
   await pipeline(response.body, fs.createWriteStream(destinationFile));
