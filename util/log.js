@@ -24,3 +24,5 @@ export default winston.createLogger({
   ),
   transports: [new winston.transports.Console()],
 });
+
+//  process.stdout.write(JSON.stringify( records, null, '  ' ) + '\n');

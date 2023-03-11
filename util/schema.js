@@ -7,6 +7,7 @@ const configuration = {
     src: {type: "string"},
     dest: {type: "string"},
     video: {type: "string"},
+    chapters: {type: "string"},
     theme: {type: "string"},
     cache: {type: "string"},
     snippets: {type: "string"},

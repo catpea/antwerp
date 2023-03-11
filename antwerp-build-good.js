@@ -37,7 +37,7 @@ import snippets from './lib/snippets.js';
 import lectures from './lib/lectures.js';
 
 import chapters from './lib/chapters.js';
-
+ 
 import downloadYoutubeThumbnails from './features/download-youtube-thumbnails.js';
 import injectYoutubeThumbnails   from './features/inject-youtube-thumbnails.js';
 import youtubeThumbnailCover from './features/youtube-thumbnail-cover.js';
@@ -63,60 +63,93 @@ const options = Object.fromEntries(['force', 'verbosity', 'removeUnusedFiles'].m
 const db = [];
 const config = await conf(configuration, options);
 const context = Object.assign({db}, config);
+
 await Promise.all(Object.entries(context.configuration).filter(([k,v])=>(typeof v==='string')).filter(([k,v])=>v.startsWith('/')) .filter(([k,v])=>!v.match(/\.[a-z0-9]{2,4}$/)) .map(([k,v])=>v).map(async v=>await fs.ensureDir(v)));
 
+async function tryCache(context){
+  const changed = false;
 
+
+  //
+  if(changed){
+    return;
+  }else{
+    // context.db = await fs.readJson(path.join(context.configuration.cache, 'db.json'));
+    // return true;
+  }
+}
 
 async function saveCache({db}){
   await fs.writeJson(path.join(context.configuration.cache, 'db.json'), db);
 }
+async function hasPortfolioSelectionChanged({db}){
+  //await fs.writeJson(path.join(context.configuration.cache, 'db.json'), db);
+}
+async function ifImagesChanged({db}){
+  //await fs.writeJson(path.join(context.configuration.cache, 'db.json'), db);
+}
 
 
-
+async function newRecord(){}
+async function ifNewWarriorAdded(){}
 
 
 // PROGRAM FLOW
 
-// 1 series and parallel are important concepts but readability is more importanter.
+// 1 series and parallel are important concepts that must be clear and never avoided,
+// 2 cache is important, but should be kept away from the program flow, as it will complicate it.
 
 await compose(
 
-  src, // setup the initial objects
-  sources, // add file/dir metadada to object
-  content, // read markdown/front matter information
-  htmlize, // markdown to html
-  order, // set default order
-  checker, // basic local link checker
-  recon, // extract images and links, and store as metadata.
+  cache(
+    tryCache,
+    series(
 
-  downloadYoutubeThumbnails, // grab the thumbs
-  youtubeThumbnailCover, // create cover
-  injectYoutubeThumbnails, // inject downloaded video covers into HTML article
+      src,
+      object,
+      sources,
+      content,
+      order,
+      htmlize,
 
-  targets, // set file destinations - datastructure probably needs work
-  attachments, // TODO: if attachement logic is needed use this
-  solutions, // analyze what is old or missing - NEEDS WORK
-  files, // smart file transfer - NEEDS WORK
-  resize, // resize images to multiple sizes
-  saveCache,
+      checker,
+      recon,
+      cache(
+        ifNewWarriorAdded,
+        downloadYoutubeThumbnails
+      ),
+      youtubeThumbnailCover,
+      injectYoutubeThumbnails,
+      targets,
+      attachments,
+      solutions,
+      saveCache,
+    ),
+  ),
 
-  // // independent/task-specific
+  resize,
+  files,
 
-  // posts,
-  // summary,
-  // browser,
-  // tiles,
-  // alerts,
-  // toc,
-  // lectures,
-  // snippets,
-  // links,
-  // portfolioJpg,
-  // audiolist,
-  // video,
+  parallel(
+    posts,
+    summary,
+    browser,
+    tiles,
+    alerts,
+    toc,
+    lectures,
+    snippets,
+    links,
+      cache(hasPortfolioSelectionChanged, portfolioJpg),
+    audiolist,
+  ),
 
-  // new
-  chapters, // divide into audio chapters - detach media from website
+  video,
 
+  // add chapter support
+
+  chapters
+
+  //
 
 )(context);
