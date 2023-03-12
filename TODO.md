@@ -6,7 +6,7 @@ antwerp
   - /util/whooptiedoo
 
 
-
+ 
 
 - dupes in yt posts but just create dupes.js to see if there are doubvle links on a pagfe.
 
@@ -18,7 +18,7 @@ antwerp
 ## Then
 - IPFS UPLOAD
 - upload the whole website to INTERNET ARCHIVE as a zip?
- 
+
 
 
 set(

@@ -96,24 +96,23 @@ await compose(
   targets, // set file destinations - datastructure probably needs work
   attachments, // TODO: if attachement logic is needed use this
   solutions, // analyze what is old or missing - NEEDS WORK
-  files, // smart file transfer - NEEDS WORK
   resize, // resize images to multiple sizes
+  files, // smart file transfer - NEEDS WORK
   saveCache,
 
   // // independent/task-specific
-
-  // posts,
-  // summary,
-  // browser,
-  // tiles,
-  // alerts,
-  // toc,
-  // lectures,
-  // snippets,
-  // links,
-  // portfolioJpg,
-  // audiolist,
-  // video,
+  posts,
+  summary,
+  browser,
+  tiles,
+  alerts,
+  toc,
+  lectures,
+  snippets,
+  links,
+  portfolioJpg,
+  audiolist,
+  video,
 
   // new
   chapters, // divide into audio chapters - detach media from website
