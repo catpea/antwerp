@@ -9,6 +9,7 @@ import cheerio from "cheerio";
 import chalk from "chalk";
 
 export default async function attachments({db}, options){
+  // NOTE: this is used in the HTML UI to show if there are extra files withing the article.
   const bar = progress(`counting attachments`, `[:bar] :rate/tps :percent :etas`, db.length, options.progress)
 
   for (const record of db){

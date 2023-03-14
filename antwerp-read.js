@@ -12,7 +12,7 @@ program.parse(process.argv);
 import npmConf from 'conf';
 const c = new npmConf({projectName: 'antwerp'});
 const [project, dotted] = program.args;
-const configuration = path.join( c.get(project), 'conf.js' );
+const configuration = c.get(project);
 
 const opts = program.opts();
 if (!conf.length) { console.error('configuration file required'); process.exit(1); }

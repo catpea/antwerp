@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import schema from './schema.js';
+import schema from '../schema/conf.js';
 
 import Ajv from 'ajv';
 

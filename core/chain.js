@@ -3,7 +3,7 @@ import path from 'path';
 import {last, head, get, set} from 'lodash-es';
 import log from '../util/log.js';
 
-export default async function order({db}){
+export default async function chain({db}){
 
   // [Default] Sort and Number
   db.sort(function(a,b){ return new Date(b.attr.date) - new Date(a.attr.date) });

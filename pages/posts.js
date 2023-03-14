@@ -15,8 +15,9 @@ export default async function posts({db, configuration:{theme}, site}, options )
   async function savePost({record,theme,site, done}){
     const data = Object.assign({},{posts:[], post: record}, site);
     const html = await template({ theme, file: path.join('post','index.ejs'), data, });
-    done()
-    return fs.writeFile(record.file.index.dest.target, html)
+    done();
+    // return fs.writeFile(record.file.index.dest.target, html)
+    return fs.writeFile(path.join(record.dest, 'index.html'), html)
   }
 
 

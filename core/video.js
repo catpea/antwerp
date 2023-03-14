@@ -29,8 +29,8 @@ export default async function video({db, configuration:{video} }, options){
 
 async function makeVideo(record, video){
   const dest = path.join(video, record.attr.id + '.mp4');
-  const audio = path.join(record.file.files.src, record.attr.audio);
-  const image = path.join(record.file.files.src, 'lg-'+record.attr.image);
+  const audio = path.join(record.src, 'files', record.attr.audio);
+  const image = path.join(record.src, 'files', 'lg-'+record.attr.image);
   try {
     const command = 'ffmpeg';
 

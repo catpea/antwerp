@@ -21,7 +21,7 @@ export default async function portfolioJpg({db, configuration:{pp, dest, theme},
   const selected = db
   .filter(record=>record.attr.features.portfolioJpg)
   .filter(record=>record.attr.image)
-  .map(record=>path.join(record.file.files.src,prefix+record.attr.image)).filter(i=>i)
+  .map(record=>path.join(path.join(record.src, 'files'), prefix + record.attr.image)).filter(i=>i)
   if(selected.length>1) await createCover(selected, targetLocation);
 
 }

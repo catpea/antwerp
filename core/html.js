@@ -6,7 +6,7 @@ import { truncate } from 'lodash-es';
 import functions from '../util/functions.js';
 import progress from '../util/progress.js';
 
-export default async function htmlize({db}, options){
+export default async function html({db}, options){
   const bar = progress(`parsing markdown`, `[:bar] :rate/tps :percent :etas`, db.length, options.progress)
   for (const record of db){
     record.html = marked(record.md);

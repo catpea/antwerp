@@ -13,7 +13,7 @@ const execFile = util.promisify(child_process.execFile);
 
 export default async function chapters({db,   configuration:{chapters}, site}, options){
 
-  console.log(options);
+ 
   if(!chapters) return;
 
   await fs.ensureDir( chapters );
@@ -89,7 +89,7 @@ function getDestinatonDirectory(base, record){
   const name = `chapter-${padStart(record.attr.chapter, 2, '0')}`;
   const root = path.join(base, name);
   const dir = path.join(base, name, 'docs' );
-  const src = path.join(record.file.files.src, record.attr.audio);
+  const src = path.join(record.src, 'files' , record.attr.audio);
   const dest = path.join(dir, record.attr.audio);
   return {dest, dir, name, src, root};
 }

@@ -4,6 +4,7 @@ const configuration = {
   properties: {
     samples: {type: "string"},
     verbosity: {type: "integer"},
+    home: {type: "string"},
     src: {type: "string"},
     dest: {type: "string"},
     video: {type: "string"},
@@ -12,11 +13,12 @@ const configuration = {
     cache: {type: "string"},
     snippets: {type: "string"},
     pp: {type: "integer"},
+    noMp3: {type: "boolean"},
     removeUnusedFiles: {type: "boolean"},
     force: {type: "boolean"},
     debug: {type: "boolean"},
   },
-  required: ['src', 'dest', 'video', 'theme', 'samples', 'cache', 'pp'],
+  required: ['home', 'src', 'dest', 'video', 'theme', 'samples', 'cache', 'pp', 'noMp3'],
   additionalProperties: false,
 }
 
@@ -25,8 +27,9 @@ const website = {
   properties: {
     title: {type: "string"},
     version: {type: "string"},
+    variant: {type: "string"},
   },
-  required: ['title'],
+  required: ['title', 'version','variant'],
   additionalProperties: true,
 };
 

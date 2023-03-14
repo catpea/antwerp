@@ -4,10 +4,10 @@ import util from 'util';
 
 import log from '../util/log.js';
 
-export default async function src({db, configuration:{src}}){
+export default async function src({db, configuration:{src,dest}}){
   const databases = await getDatabases(src);
   const paths = await getPaths(databases);
-  const records = getRecords(paths);
+  const records = getRecords(paths);//.slice(0,111);
 
   db.splice(0, ...records  ); // injecting data into the array
   log.info(`Working with ${db.length} records.`)
@@ -37,11 +37,13 @@ function getRecords(paths){
   const objects = [];
   for(const src of paths){
     const database = path.basename(path.dirname(src))
+
     const object = {
       src,
+      dest: "",
       database,
 
-      file:{},
+
       attr:{features:{}},
       html:"",
       order:{},

@@ -2,13 +2,13 @@ import { spawn } from 'child_process';
 import { pipeline } from 'node:stream/promises';
 import fs from 'fs-extra';
 import path from 'path';
-import log from '../util/log.js';
-import template from '../util/template.js';
+import log from '../../util/log.js';
+import template from '../../util/template.js';
 import fetch from 'node-fetch';
 import lodash from 'lodash';
 import chalk from 'chalk';
 const {range, chunk, chain, partition, indexOf, takeRight, take, reverse, difference} = lodash;
-import progress from '../util/progress.js';
+import progress from '../../util/progress.js';
 
 
 
@@ -54,7 +54,7 @@ async function downloadThumbnails(record, options){
       .filter(url=>url.startsWith('https://www.youtube.com/watch?v='))
       .map(url=>getVideoId(url));
 
-    const existingFiles = (await fs.readdir(record.file.files.src, { withFileTypes: true }))
+    const existingFiles = (await fs.readdir(path.join(record.src, 'files'), { withFileTypes: true }))
       .filter(o => o.isFile())
       .map(o => o.name)
       .map(s => s.match(/^yid-(.+)\.jpg$/))
@@ -71,7 +71,7 @@ async function downloadThumbnails(record, options){
         console.log(`record title: ${record.attr.title}`);
         console.log(`YOUTUBE DOWNLOAD DISABLED: ${v}`);
       }else{
-        await downloadThumbnail(v, record.file.files.src);
+        await downloadThumbnail(v, path.join(record.src, 'files'));
         bar.tick()
       }
       await slowDown();

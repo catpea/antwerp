@@ -3,13 +3,13 @@ import { pipeline } from 'node:stream/promises';
 import fs from 'fs-extra';
 import util from 'util';
 import path from 'path';
-import log from '../util/log.js';
-import template from '../util/template.js';
+import log from '../../util/log.js';
+import template from '../../util/template.js';
 import fetch from 'node-fetch';
 import lodash from 'lodash';
 import chalk from 'chalk';
 const {kebabCase, range, chunk, chain, partition, indexOf, takeRight, take, reverse, difference, last, nth} = lodash;
-import progress from '../util/progress.js';
+import progress from '../../util/progress.js';
 import * as cheerio from 'cheerio';
 import pretty from "pretty";
 

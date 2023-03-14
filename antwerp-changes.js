@@ -20,7 +20,7 @@ import npmConf from 'conf';
 const c = new npmConf({projectName: 'antwerp'});
 const [project] = program.args;
 invariant(project, 'project name is required execute antwerp without any arguments to see help.')
-const configuration = path.join( c.get(project), 'conf.js' );
+const configuration = c.get(project);
 
 const opts = program.opts();
 if (!conf.length) { console.error('project name required'); process.exit(1); }
@@ -30,8 +30,8 @@ const config = await conf(configuration, options);
 const locations = [];
 for (const profile of config.publish.profiles) {
   const prescription = await rsend(merge({}, profile, { src: { dir: config.configuration.dest }}), config.configuration);
-  const location = path.resolve([profile.name, profile.batchfile].join('-'));
-  let contents = prescription.script.trim()
+  const location = path.join(config.configuration.dest, [profile.name, profile.batchfile].join('-') );
+  let contents = prescription.script.trim();
   await fs.writeFile(location, contents.length ? contents + '\n':'');
   locations.push(location);
   if (opts.debug) log.info([location + ` (${contents.length} bytes)`, contents.length ? contents + '\n' : '(empty)'].join('\n'))
@@ -39,4 +39,3 @@ for (const profile of config.publish.profiles) {
 }
 
 console.log(locations.map(i=>i).join(' '));
-

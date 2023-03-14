@@ -12,7 +12,7 @@ export default async function content({db}, options){
 
   // Read Metadata
   for (const record of db){
-    const text = await fs.readFile(record.file.index.src, 'utf8'); // read text
+    const text = await fs.readFile(path.join(record.src, 'index.md'), 'utf8'); // read text
     const {attributes:attr, body:md} = frontMatter(text); // calculate front matter
     Object.assign(record.attr, attr);
     record.md = md;
