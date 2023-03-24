@@ -24,26 +24,26 @@ export default async function main({theme, file, data}){
     closeDelimiter: '>',
   };
 
-  try {
+  // try {
     const template = await cached(theme,file,options);
     const html = template(Object.assign(data, functions, {_}));
     return html;
 
-  }catch(e){
-    if(e instanceof ReferenceError){
-      // console.trace(chalk.bgYellow.black(`Template File=${file}`));
-    } else if(e instanceof SyntaxError){
-      const text = await fs.readFile(path.join(theme, file), 'utf8');
-      const se = ejsLint(text, options);
-      console.error(chalk.bgRed.white(Array(81).join('•')))
-      console.error('message', se.message);
-      console.error('line', se.line);
-      console.error('column', se.column);
-      console.error(chalk.bgRed.white(Array(81).join('•')))
-    }
-    console.trace(chalk.bgYellow.black(`Template File=${file}`));
-    throw e;
-  }
+  // }catch(e){
+  //   if(e instanceof ReferenceError){
+  //     // console.trace(chalk.bgYellow.black(`Template File=${file}`));
+  //   } else if(e instanceof SyntaxError){
+  //     const text = await fs.readFile(path.join(theme, file), 'utf8');
+  //     const se = ejsLint(text, options);
+  //     console.error(chalk.bgRed.white(Array(81).join('•')))
+  //     console.error('message', se.message);
+  //     console.error('line', se.line);
+  //     console.error('column', se.column);
+  //     console.error(chalk.bgRed.white(Array(81).join('•')))
+  //   }
+  //   console.trace(chalk.bgYellow.black(`Template File=${file}`));
+  //   throw e;
+  // }
 
 }
 

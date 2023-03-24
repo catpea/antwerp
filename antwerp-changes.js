@@ -30,7 +30,7 @@ const config = await conf(configuration, options);
 const locations = [];
 for (const profile of config.publish.profiles) {
   const prescription = await rsend(merge({}, profile, { src: { dir: config.configuration.dest }}), config.configuration);
-  const location = path.join(config.configuration.dest, [profile.name, profile.batchfile].join('-') );
+  const location = path.join(config.configuration.home, [profile.name, profile.batchfile].join('-') );
   let contents = prescription.script.trim();
   await fs.writeFile(location, contents.length ? contents + '\n':'');
   locations.push(location);

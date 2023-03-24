@@ -4,7 +4,7 @@ import {last, head, get, set} from 'lodash-es';
 import log from '../util/log.js';
 
 export default async function chain({db}){
-
+    log.info('Chaining records together')
   // [Default] Sort and Number
   db.sort(function(a,b){ return new Date(b.attr.date) - new Date(a.attr.date) });
   for (let number = db.length, index = 0, size = db.length; index < size; number--, index++) { db[index].number = number; }
