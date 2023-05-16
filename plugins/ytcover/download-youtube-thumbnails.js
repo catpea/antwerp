@@ -119,19 +119,25 @@ async function downloadThumbnail(v,dest){
       'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:106.0) Gecko/20100101 Firefox/106.0'
     },            // Request headers. format is the identical to that accepted by the Headers constructor (see below)
 
-    agent: function(_parsedURL) {
-   		if (_parsedURL.protocol == 'http:') {
-   			return httpAgent;
-   		} else {
-   			return httpsAgent;
-   		}
-   	}
+    // agent: function(_parsedURL) {
+   	// 	if (_parsedURL.protocol == 'http:') {
+   	// 		return httpAgent;
+   	// 	} else {
+   	// 		return httpsAgent;
+   	// 	}
+   	// }
 }
 
 
   const response = await fetch(downloadUrl, options);
   // spawn('curl', [downloadUrl, '--output', destinationFile]);
-  if (!response.ok) throw new Error(`unexpected response ${response.statusText}`);
+  if (!response.ok){
+
+		throw new Error(`UNABLE TO DOWNLOAD: ${downloadUrl}`);
+		throw new Error(`unexpected response ${response.statusText}`);
+
+	}
+
   await pipeline(response.body, fs.createWriteStream(destinationFile));
 }
 

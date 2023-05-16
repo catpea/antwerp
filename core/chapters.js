@@ -13,7 +13,7 @@ const execFile = util.promisify(child_process.execFile);
 
 export default async function chapters({db,   configuration:{chapters}, site}, options){
 
- 
+
   if(!chapters) return;
 
   await fs.ensureDir( chapters );
@@ -23,9 +23,38 @@ export default async function chapters({db,   configuration:{chapters}, site}, o
   for (const record of db){
     const featureRequested = ( record.attr.audio );
     if(featureRequested){
-      const {dest, dir, name} = getDestinatonDirectory(chapters, record);
+      const {dest, dir, name, src} = getDestinatonDirectory(chapters, record);
       const exists = await fs.pathExists(dest);
-      if(!exists) selected.push(record)
+
+      if(exists){
+        const outdated = await expired(src, dest);
+        if(outdated){
+          console.log(`chapters: file ${dest} was expired, and is not up to date.`);
+          selected.push(record)
+
+          /*
+
+          file /home/meow/Universe/Development/catpea-project/dist/chapters/chapter-06/docs/poem-1170.mp3 was expired!!!!!!!!!!!!
+          file /home/meow/Universe/Development/catpea-project/dist/chapters/chapter-06/docs/poem-1168.mp3 was expired!!!!!!!!!!!!
+          file /home/meow/Universe/Development/catpea-project/dist/chapters/chapter-06/docs/poem-1146.mp3 was expired!!!!!!!!!!!!
+          file /home/meow/Universe/Development/catpea-project/dist/chapters/chapter-06/docs/poem-1145.mp3 was expired!!!!!!!!!!!!
+          file /home/meow/Universe/Development/catpea-project/dist/chapters/chapter-06/docs/poem-1142.mp3 was expired!!!!!!!!!!!!
+          file /home/meow/Universe/Development/catpea-project/dist/chapters/chapter-06/docs/poem-1141.mp3 was expired!!!!!!!!!!!!
+          file /home/meow/Universe/Development/catpea-project/dist/chapters/chapter-06/docs/poem-1140.mp3 was expired!!!!!!!!!!!!
+          file /home/meow/Universe/Development/catpea-project/dist/chapters/chapter-06/docs/poem-1139.mp3 was expired!!!!!!!!!!!!
+          file /home/meow/Universe/Development/catpea-project/dist/chapters/chapter-06/docs/poem-1123.mp3 was expired!!!!!!!!!!!!
+          file /home/meow/Universe/Development/catpea-project/dist/chapters/chapter-06/docs/poem-1115.mp3 was expired!!!!!!!!!!!!
+          file /home/meow/Universe/Development/catpea-project/dist/chapters/chapter-06/docs/poem-1113.mp3 was expired!!!!!!!!!!!!
+
+
+          */
+        }
+
+      }else{
+        // did not exist, add it
+        selected.push(record)
+      }
+
     }
   }
 
@@ -37,8 +66,6 @@ export default async function chapters({db,   configuration:{chapters}, site}, o
     await fs.copyFile(src, dest);
     bar.tick()
   }
-
-
 
   // Create Index Files - link to all mp3 in the set
   // Initialize Chapter Metadata
@@ -150,4 +177,29 @@ return `
 </html>
 
 `;
+}
+
+
+async function expired(src, dest){
+    const srcStat = await fs.stat(src);
+    const destStat = await fs.stat(dest);
+    const sourceDate = new Date(srcStat.mtime).getTime();
+    const destinationDate = new Date(destStat.mtime).getTime();
+    let difference = sourceDate - destinationDate;
+
+    // if(src.includes('poem-1170')){
+    //   console.log('\n\n');
+    // console.log({src});
+    // console.log({dest});
+    //   console.log({srcStat});
+    //   console.log({destStat});
+    //   console.log({sourceDate});
+    //   console.log({destinationDate});
+    //   console.log({difference});
+    //   console.log(`\nSource file is older than the destination file by   (${difference}), therefore destination is out-of-date, and needs to be updated.`);
+    // }
+
+    // console.log(src, dest, difference);
+
+    if(difference>0) return true;
 }

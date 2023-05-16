@@ -32,17 +32,27 @@ async function copier(src, dest, {filter, cleanup, blacklist} = {filter:function
   const missingFiles = difference(sourceFiles, copiedFiles);
   const extraFiles = difference(destinationFiles, sourceFiles);
 
+
+  // if(src.includes('poem-1170')){
+  //   console.log({allFiles});
+  //   console.log({destinationFiles});
+  //   console.log({copiedFiles});
+  //
+  // }
+
   // FOR OUTDATED FILES
   for(const filename of copiedFiles){
+
     if(await expired(path.join(src, filename), path.join(dest, filename))) {
       const srcStat = await fs.stat(path.join(src, filename));
       const destStat = await fs.stat(path.join(dest, filename));
       const sourceDate = new Date(srcStat.mtime);
       const destinationDate = new Date(destStat.mtime);
       console.log('\n');
-      // log.info(`${path.join(src, filename)} updated ${ago(sourceDate)} but the last time destination was changed is ${ago(destinationDate)}, therefore file must be copied from source to destination.`);
+      console.log(`${path.join(src, filename)} updated ${ago(sourceDate)} but the last time destination was changed is ${ago(destinationDate)}, therefore file must be copied from source to destination.`);
       await fs.copyFile(path.join(src, filename), path.join(dest, filename));
     }
+
   }
 
   // FOR FILES THAT ARE MISSING
@@ -75,11 +85,22 @@ async function copier(src, dest, {filter, cleanup, blacklist} = {filter:function
 async function expired(src, dest){
     const srcStat = await fs.stat(src);
     const destStat = await fs.stat(dest);
-    const sourceDate = new Date(srcStat.mtime);
-    const destinationDate = new Date(destStat.mtime);
+    const sourceDate = new Date(srcStat.mtime).getTime();
+    const destinationDate = new Date(destStat.mtime).getTime();
     let difference = sourceDate - destinationDate;
 
-    // if(difference>0) console.log(`\nSource file is older than the destination file by ${ms(difference, { long: true })} (${difference}), therefore destination is out-of-date, and needs to be updated.`);
+    // if(src.includes('poem-1170')){
+    //   console.log('\n\n');
+    //   console.log({src});
+    //   console.log({dest});
+    //   console.log({srcStat});
+    //   console.log({destStat});
+    //   console.log({sourceDate});
+    //   console.log({destinationDate});
+    //   console.log({difference});
+    //   console.log(`\nSource file is older than the destination file by ${ms(difference, { long: true })} (${difference}), therefore destination is out-of-date, and needs to be updated.`);
+    // }
+
     if(difference>0) return true;
 }
 

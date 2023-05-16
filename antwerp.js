@@ -44,7 +44,7 @@ program
     const c = new npmConf({projectName: 'antwerp'});
     for(const [name,location] of Object.entries(c.store)){
       const [project] = program.args;
-      const configuration = path.join( location, 'conf.js' );
+      const configuration = path.join( location );
       if (!conf.length) { console.error('configuration file required'); process.exit(1); }
       const config = await conf(configuration);
       console.log();
