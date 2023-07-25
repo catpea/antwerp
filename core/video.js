@@ -11,7 +11,7 @@ import child_process from 'child_process';
 const execFile = util.promisify(child_process.execFile);
 
 export default async function video({db, configuration:{video} }, options){
-    log.info('Converting audio to video')
+    log.info('Converting Audio To Video')
   await fs.ensureDir( video );
   const selected = [];
   for (const record of db){

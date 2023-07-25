@@ -29,7 +29,7 @@ export default async function chapters({db,   configuration:{chapters}, site}, o
       if(exists){
         const outdated = await expired(src, dest);
         if(outdated){
-          console.log(`chapters: file ${dest} was expired, and is not up to date.`);
+          console.log(`chapters: file ${dest} expired, it will be updated.`);
           selected.push(record)
 
           /*

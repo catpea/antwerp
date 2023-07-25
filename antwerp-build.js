@@ -26,6 +26,7 @@ import resize from './core/resize.js';
 import schema from './core/schema.js';
 import src from './core/src.js';
 import video from './core/video.js';
+import audio from './core/audio.js';
 
 import alerts from './pages/alerts.js';
 import audiolist from './pages/audiolist.js';
@@ -96,6 +97,7 @@ await compose(
   links,
   portfolioJpg,
   audiolist,
+  audio,
   video,
   chapters, // divide into audio chapters - detach media from website
 
