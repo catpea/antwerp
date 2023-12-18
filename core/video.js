@@ -40,6 +40,7 @@ async function makeVideo(record, video){
       '-loglevel', 'panic',
       '-y',
       '-loop', '1',
+      '-framerate', '1',
       '-i', image,
       '-i', audio,
       '-c:v',
@@ -58,6 +59,7 @@ async function makeVideo(record, video){
       dest,
     ];
 
+    console.log(command, commandArguments.join(' '));
     const { stdout } = await execFile(command, commandArguments);
     if(stdout) console.log(stdout);
   } catch (e){
