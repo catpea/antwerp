@@ -1,6 +1,6 @@
 {
   "name": "antwerp",
-  "version": "1.1.18",
+  "version": "1.1.19",
   "description": "Antwerp Static Site Generator",
   "type": "module",
   "main": "antwerp.js",
