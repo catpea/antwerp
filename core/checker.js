@@ -24,8 +24,8 @@ async function checkLinks(record){
   .map((link) => {
     const kind = {};
     if(link.url.startsWith('http://')||link.url.startsWith('https://')||link.url.startsWith('mailto:')) Object.assign(kind, {remote: true})
-    if(link.url.match(/^https?:\/\/\w+\.catpea.\w{3}/)) Object.assign(kind, {network: true})
-    if(link.url.match(/^https?:\/\/catpea.\w{3}/)) Object.assign(kind, {network: true})
+    if(link.url.match(/^https?:\/\/\w+\.catpea.\w{3}\W/)) Object.assign(kind, {network: true})
+    if(link.url.match(/^https?:\/\/catpea.\w{3}\W/)) Object.assign(kind, {network: true})
     if(link.url.includes('/permalink/')) Object.assign(kind, {permalink: true})
     if(!kind.remote&&!kind.permalink) kind.local = true;
     return Object.assign(link, kind);
@@ -38,8 +38,8 @@ async function checkLinks(record){
       const exists = await fs.pathExists(target);
       if(!exists) console.log('MISSING LINK: ', chalk.red(target));
   }
-  
-  
+
+
   for(const link of links.filter(link=>link.url.startsWith('http')).filter(link=>link.url.includes('\\')) ){
     console.log('\nCONTAINS A BACKSLASH: ', chalk.red(link.url), link.record.attr.id, link.tag + ':' + link.attr);
   }
